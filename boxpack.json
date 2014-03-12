@@ -9,16 +9,17 @@
     "ssh_username"           : "vagrant",
     "ssh_password"           : "vagrant",
     "output_directory"       : "ubuntu64_basebox_virtualbox",
-  "boot_command": [
-                "<esc><esc><enter><wait>",
-                "/install/vmlinuz noapic ",
-                "preseed/url=https://raw.github.com/chad-thompson/packer-example/master/ubuntu-simple-preseed.cfg ",
-                "debian-installer=en_US auto locale=en_US kbd-chooser/method=gb ",
-                "hostname=vagrant-precise64 ",
-                "fb=false debconf/frontend=noninteractive ",
-                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=GB ",
-                "keyboard-configuration/variant=GB console-setup/ask_detect=false ",
-                "initrd=/install/initrd.gz -- <enter>"  ],
+"boot_command"           : [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic ",
+      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{ .Name }} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=US ",
+      "keyboard-configuration/variant=US console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+    ],
     "vmx_data"             : {
       "memsize" : "512"
     },
