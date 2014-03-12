@@ -1,29 +1,27 @@
 {
   "builders": [{
-    "type"                   : "virtualbox-iso",
+    "type"                   : "vmware-iso",
     "iso_url"                : "http://ubuntu.osuosl.org/releases/12.04.4/ubuntu-12.04.4-server-amd64.iso",
     "iso_checksum"           : "e83adb9af4ec0a039e6a5c6e145a34de",
     "iso_checksum_type"      : "md5",
     "disk_size"              : 10000,
-    "guest_os_type"          : "Ubuntu_64",
     "http_directory"         : "preseed",
     "ssh_username"           : "vagrant",
     "ssh_password"           : "vagrant",
     "output_directory"       : "ubuntu64_basebox_virtualbox",
-    "boot_command"           : [
-      "<esc><esc><enter><wait>",
-      "/install/vmlinuz noapic ",
-      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
-      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-      "hostname={{ .Name }} ",
-      "fb=false debconf/frontend=noninteractive ",
-      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=US ",
-      "keyboard-configuration/variant=US console-setup/ask_detect=false ",
-      "initrd=/install/initrd.gz -- <enter>"
-    ],
-    "vboxmanage"             : [
-      ["modifyvm", "{{.Name}}", "--memory", "1024"]
-    ],
+  "boot_command": [
+                "<esc><esc><enter><wait>",
+                "/install/vmlinuz noapic ",
+                "preseed/url=https://raw.github.com/chad-thompson/packer-example/master/ubuntu-simple-preseed.cfg ",
+                "debian-installer=en_US auto locale=en_US kbd-chooser/method=gb ",
+                "hostname=vagrant-precise64 ",
+                "fb=false debconf/frontend=noninteractive ",
+                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=GB ",
+                "keyboard-configuration/variant=GB console-setup/ask_detect=false ",
+                "initrd=/install/initrd.gz -- <enter>"  ],
+    "vmx_data"             : {
+      "memsize" : "512"
+    },
     "shutdown_command"       : "echo 'shutdown -P now' > shutdown.sh; echo 'vagrant' | sudo -S sh 'shutdown.sh'"
   }],
   "provisioners"             : [{
@@ -61,7 +59,7 @@
   "post-processors"          : [
     {
       "type" : "vagrant",
-      "only" : ["virtualbox-iso"]
+      "only" : ["vmware-iso"]
     }
   ]
 }
